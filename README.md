@@ -1,143 +1,130 @@
-# 🎥 Watch2Give
+# Watch2Give — Transforming Attention into Real Impact
 
-**Watch2Give** is a smart-contract-powered platform that allows advertisers to fund user attention, users to earn and donate crypto rewards, and vendors to create real-world impact — all verified on-chain. Built entirely on the Astar Network using ink! smart contracts, it leverages Wasm execution, DeFi protocols, and AI-driven verification to make every ad engagement meaningful.
+**Watch2Give** is a fully on-chain, Polkadot-native dApp that connects advertisers, viewers, and real-world vendors through smart contracts, enabling ad engagement to fund verified donations.
 
----
-
-## 🚀 Key Idea
-
-Watch2Give transforms ad engagement into real-world action. Advertisers pay for attention. Viewers earn and donate rewards. Vendors deliver verified impact. Smart contracts automate the flow, and AI agents ensure trust — all within the Polkadot ecosystem (via Astar).
+Built entirely on **Astar Network** using **ink!** smart contracts and Rust-based infrastructure (via `cargo`), this project is designed for **long-term decentralization**, **on-chain trust**, and **cross-chain scalability** — going beyond simulation or short-term proof-of-concepts.
 
 ---
 
-## ⚙️ Smart Contract Architecture (Astar + ink!)
+## What Makes It Special
 
-### 1. `watch2give_manager` Contract (Main Logic & Orchestrator)
-- Manages:
-  - Registered vendors & watchers
-  - Engagement records
-  - Vendor holding metrics
-  - Reward parameters and distribution
-  - DeFi deployment data
-- Holds:
-  - xcUSDT funds from advertisers
-  - Yield collected from Astar DeFi protocols
-- Core Logic:
-  - Engagement validation
-  - Reward distribution
-  - Cross-contract DeFi interactions
-  - Periodic airdrop execution
-
-### 2. `give_token` Contract (PSP22)
-- Implements the PSP22 token standard
-- Defines the `$GIVE` token
-- Minted only by `watch2give_manager`
-- Fully backed 1:1 by xcUSDT
+- Viewers **earn** tokens by watching ads
+- They can **donate** tokens to local vendors (like snack carts, schools, shelters)
+- Vendors **redeem** tokens for stablecoins after submitting **photo proof**
+- Airdrops are triggered based on **vendor holding metrics**
+- All transactions, proofs, and flows are **recorded on-chain**
 
 ---
 
-## 🪙 Tokens Used
+## Why We Built It with Cargo & Ink!
 
-| Token      | Role                                                                 |
-|------------|----------------------------------------------------------------------|
-| `xcUSDT`   | Payment token from advertisers (bridged via XCM to Astar)           |
-| `$GIVE`    | Reward/donation token (minted and burned on-chain, PSP22 standard)  |
+While hackathon guides recommended using **Remix**, we faced limitations for long-term vision:
 
----
+✅ **We chose `cargo` and `ink!` for full control** over the smart contract suite  
+✅ **Deployed on Polkadot-native chains (AssetHub/Astar)**  
+✅ **Tightly integrated with off-chain AI verification and backend orchestration**
 
-## 🔁 Full Workflow (On-Chain Execution)
-
-### 1. Deployment & Setup
-- Deploy `give_token` (PSP22) and `watch2give_manager`
-- Configure:
-  - Admin roles
-  - DeFi protocol whitelisting (e.g. ArthSwap, AstridDAO)
-  - Reward parameters
-- Fund reward pool with initial $GIVE
-
-### 2. Advertiser Funding
-- Advertisers deposit `xcUSDT` via `deposit()` to `watch2give_manager`
-
-### 3. DeFi Vault Deployment
-- Admin/keeper triggers `deploy_funds_to_defi()` to earn passive yield
-- Contract performs cross-contract call to DeFi protocols
-
-### 4. Yield Harvesting
-- Keeper calls `harvest_yield()` periodically
-- Contract:
-  - Claims or withdraws from DeFi
-  - Swaps other tokens to `xcUSDT` or `$GIVE` via DEX if needed
-
-### 5. Engagement Recording
-- Off-chain app verifies engagement (e.g. watched ad)
-- Backend calls `record_engagement(watcher, vendor, proof)`
-- Contract:
-  - Checks registration
-  - Stores `(watcher, vendor)` + timestamp
-  - Allocates $GIVE to selected vendor
-
-### 6. Vendor Holding Metric
-- Each vendor's last cashout timestamp is stored
-- A live holding score (TSLC: Time Since Last Cashout) is computed via `get_vendor_metric()`
-- Watcher rewards are boosted based on this score
-
-### 7. Vendor Cashout
-- Vendor approves `GIVE` for swap on ArthSwap (or DEX)
-- Swaps `GIVE → xcUSDT`
-- Calls `notify_cashout()` to update holding metric
-
-### 8. Airdrop Distribution
-- Keeper calls `distribute_airdrops()`
-- Contract:
-  - Loops through stored engagements
-  - Calculates reward amounts based on vendor metrics
-  - Transfers $GIVE to watchers from reward pool
+It took extra time, but this decision future-proofs Watch2Give for real-world deployment and ecosystem growth.
 
 ---
 
-## 📊 Roles and Components
+## Smart Contract Architecture
 
-| Layer              | Responsibility |
-|--------------------|----------------|
-| **Smart Contracts** | Token management, DeFi, engagement logs, metric calculation, airdrop logic |
-| **AI Agents (off-chain)** | Image proof validation, fraud detection, auto-rejection |
-| **Keeper Service (off-chain)** | Triggers yield harvesting, airdrops, DeFi deploy |
-| **Frontend (Streamlit)** | Admin & user dashboards |
-| **Backend (FastAPI)** | Engagement verification, wallet integration, trigger coordination |
+### 🔹 1. `watch2give_manager` (Main Logic)
+- Registers vendors and watchers
+- Logs engagements + proof hashes
+- Distributes rewards
+- Interfaces with DeFi (e.g. ArthSwap)
+- Calculates holding metrics and triggers airdrops
 
----
-
-## ✅ Advantages of Astar-Driven Design
-
-- Fully on-chain engagement and donation logic
-- Minimal off-chain trust assumptions
-- Yield from DeFi protocols directly feeds rewards
-- Real value for real actions — no simulation, no middlemen
+### 🔹 2. `give_token` (PSP22)
+- A standard ink! PSP22 token (`$GIVE`)
+- Minted/burned only by `watch2give_manager`
+- Used for donations and airdrop rewards
 
 ---
 
-## 📁 Project Structure (Planned)
+## 🪙 Token Flow
 
-watch2give/
-├── contracts/
-│   ├── watch2give_manager/   # ink! smart contract logic
-│   └── give_token/           # PSP22 $GIVE token
-├── whitepaper.md             # Full protocol explanation
-├── backend/                  # FastAPI orchestration
-├── frontend/                 # Streamlit admin/user dashboards
-├── docs/                     # Diagrams, tokenomics, design specs
-└── README.md                 # You’re here!
-<!--
-**Watch2Give/Watch2Give** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+| Token      | Role                                                  |
+|------------|-------------------------------------------------------|
+| `xcUSDT`   | Advertiser deposits (via XCM to Astar)                |
+| `$GIVE`    | Minted reward token, used to donate and claim airdrops|
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## Full Flow
+
+1. **Advertisers deposit** `xcUSDT`
+2. Smart contract **mints $GIVE** for users
+3. **Viewers watch ads → earn tokens**
+4. They **donate** tokens to vendors
+5. **Vendors submit photo proof** (verified via AI)
+6. Contract **logs timestamp, updates metrics**
+7. Vendors **redeem** tokens → stablecoin
+8. **Airdrops** go back to viewers based on vendor engagement
+
+---
+
+## On-Chain Methods
+
+| Function | Role |
+|----------|------|
+| `record_engagement(watcher, vendor, proof)` | Logs viewer-vendor donation |
+| `notify_cashout()` | Vendor redeems, updates holding score |
+| `distribute_airdrops()` | Distributes tokens to watchers |
+| `deploy_funds_to_defi()` | Moves xcUSDT to yield vault |
+| `mint(to, amount)` | Mints new GIVE tokens |
+| `get_vendor_metric()` | Computes TSLC (Time Since Last Cashout) |
+
+---
+
+## AI-Driven Verification
+
+✅ Photo validation using image classification  
+✅ Proof hash recorded on-chain  
+✅ Smart contract emits `ProofSubmitted` event for backend/frontend to listen
+
+---
+
+## Components Overview
+
+| Layer          | Tool/Language     | Purpose                            |
+|----------------|-------------------|-------------------------------------|
+| Smart Contracts | ink! (Rust)       | $GIVE token, engagement tracking    |
+| Backend        | FastAPI (Python)  | Agent orchestration, API endpoints  |
+| AI Agents      | Python (TensorFlow)| Image proof validation, fraud logic |
+| Frontend       | Streamlit         | Viewer/vendor dashboards            |
+| Transfer       | Polkadot.js + Script | Send transactions on AssetHub   |
+
+---
+
+## ✅ Polkadot-Only Commitment
+
+We did **not** use Moonbeam, Remix, or Ethereum-based tooling. Everything is:
+
+- 🧬 Built for Polkadot (AssetHub/Astar)
+- 💡 On-chain logic in ink!
+- 🔁 Transfers via Polkadot.js API
+- 📦 Deployed via `cargo-contract` and Substrate-compatible node
+
+---
+
+## 📁 Project Structure
+
+watch2give/ ├── contracts/ │ ├── give_token/ # ink! PSP22 contract ($GIVE) │ └── watch2give_manager/ # Main orchestrator contract ├── backend/ # FastAPI backend (agent controller) ├── frontend/ # Streamlit UI (admin & viewer) ├── scripts/ # Polkadot.js API transfer logic ├── ai-monitoring/ # AI image verification pipeline ├── proof-of-giving/ # Proof validation microservice ├── vendor-dashboard/ # Vendor dashboard (streamlit) ├── gamification-api/ # Rewards engine & badge tracking ├── whitepaper.md # Full protocol design & tokenomics └── README.md # You’re here!
+
+
+---
+
+## Team
+
+Built by:
+
+- **Ismail Malik** — System Design & Integration
+- **Muhammad Zaid Naeem** — Smart Contracts, Polkadot Setup
+- **Muhammad Waleed Naeem** — Backend & AI Verification
+
+---
+
+Thank you!
