@@ -30,14 +30,14 @@ It took extra time, but this decision future-proofs Watch2Give for real-world de
 
 ## Smart Contract Architecture
 
-### 🔹 1. `watch2give_manager` (Main Logic)
+### 1. `watch2give_manager` (Main Logic)
 - Registers vendors and watchers
 - Logs engagements + proof hashes
 - Distributes rewards
 - Interfaces with DeFi (e.g. ArthSwap)
 - Calculates holding metrics and triggers airdrops
 
-### 🔹 2. `give_token` (PSP22)
+### 2. `give_token` (PSP22)
 - A standard ink! PSP22 token (`$GIVE`)
 - Minted/burned only by `watch2give_manager`
 - Used for donations and airdrop rewards
@@ -103,10 +103,10 @@ It took extra time, but this decision future-proofs Watch2Give for real-world de
 
 We did **not** use Moonbeam, Remix, or Ethereum-based tooling. Everything is:
 
-- 🧬 Built for Polkadot (AssetHub/Astar)
-- 💡 On-chain logic in ink!
-- 🔁 Transfers via Polkadot.js API
-- 📦 Deployed via `cargo-contract` and Substrate-compatible node
+- Built for Polkadot (AssetHub/Astar)
+- On-chain logic in ink!
+- Transfers via Polkadot.js API
+- Deployed via `cargo-contract` and Substrate-compatible node
 
 ---
 
@@ -122,7 +122,7 @@ watch2give/ ├── contracts/ │ ├── give_token/ # ink! PSP22 contract
 Built by:
 
 - **Ismail Malik** — System Design & Integration
-- **Muhammad Zaid Naeem** — Smart Contracts, Polkadot Setup
+- **Muhammad Zaid Naeem** — Smart Contracts, Polkadot Setup (Github: zcybersense)
 - **Muhammad Waleed Naeem** — Backend & AI Verification
 
 ---
