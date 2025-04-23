@@ -117,14 +117,6 @@ watch2give/ ├── contracts/ │ ├── give_token/ # ink! PSP22 contract
 
 ---
 
-## Team
-
-Built by:
-
-- **Ismail Malik** — System Design & Integration
-- **Muhammad Zaid Naeem** — Smart Contracts, Polkadot Setup
-- **Muhammad Waleed Naeem** — Backend & AI Verification
-
 ---
 
 Thank you!
